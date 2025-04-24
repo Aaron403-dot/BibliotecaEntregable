@@ -22,6 +22,19 @@ public class DVD extends RecursoBiblioteca {
 	}
 	
 	
+	
+
+	public DVD(DVD recursos) {
+		super(recursos);
+		this.studio = recursos.studio;
+		this.director = recursos.director;
+		this.fechaDeSalida = recursos.fechaDeSalida;
+		this.duracionMinutos = recursos.duracionMinutos;
+		this.genero = recursos.genero;
+	}
+
+
+
 
 	public String getStudio() {
 		return studio;

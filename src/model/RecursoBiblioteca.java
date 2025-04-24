@@ -19,11 +19,22 @@ public abstract class RecursoBiblioteca {
 	EstadosRecurso estado = EstadosRecurso.DISPONIBLE;
 	LocalDate fechaDeAlquiler;
 	LocalDate fechaDeDevolucion;
+	
 	public RecursoBiblioteca(long id, String titulo,int existencias) {
 		this.id = id;
 		this.titulo = titulo;
 		this.existencias = existencias;
 	}
+	
+	public RecursoBiblioteca(RecursoBiblioteca recursos){
+		this.id = recursos.id;
+		this.titulo = recursos.titulo;
+		this.existencias = recursos.existencias;
+		this.estado = recursos.estado;
+		this.fechaDeAlquiler = recursos.fechaDeAlquiler;
+		this.fechaDeDevolucion = recursos.fechaDeDevolucion;
+	}
+	
 	
 	public long getId() {
 		return id;

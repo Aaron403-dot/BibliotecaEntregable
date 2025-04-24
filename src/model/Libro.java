@@ -17,6 +17,17 @@ public class Libro extends RecursoBiblioteca {
 		this.genero = genero;
 	}
 
+	
+	
+	public Libro(Libro recursos) {
+		super(recursos);
+		this.autor= recursos.autor;
+		this.fechaDePublicacion = recursos.fechaDePublicacion;
+		this.genero = recursos.genero;
+	}
+
+
+
 	@Override
 	public String descripcion() {
 		String resumen;

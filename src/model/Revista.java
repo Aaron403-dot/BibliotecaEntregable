@@ -16,6 +16,16 @@ public class Revista extends RecursoBiblioteca {
 	
 	
 	
+	
+	public Revista(Revista recursos) {
+		super(recursos);
+		this.genero = recursos.genero;
+		this.numeroEdicion = recursos.numeroEdicion;
+	}
+
+
+
+
 	public TipoRevista getGenero() {
 		return genero;
 	}

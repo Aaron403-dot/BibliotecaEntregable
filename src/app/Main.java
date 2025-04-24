@@ -161,17 +161,30 @@ public class Main implements Prestamista {
 						if(esNumero(confirmable) && !confirmable.isBlank()){
 							
 							long converter =Long.parseLong(confirmable);
-							RecursoBiblioteca recurso = recursos.get(converter);
+							RecursoBiblioteca recurso;
+							String modelo = recursos.get(converter).getClass().toString();
+							switch (modelo){
+							case "class model.Libro":
+								recurso = new Libro((Libro) recursos.get(converter));
+								break;
+							case "class model.Revista":
+								recurso = new Revista((Revista) recursos.get(converter));
+								break;
+							case "class model.DVD":
+								recurso = new DVD((DVD) recursos.get(converter));
+								break;
+							default:
+								throw new Exception("COMO LO HAS HECHO");
+							}
 							
 							if(recursos.containsKey(converter)){
 								
 								if(recurso.getExistencias() > 0) {
 									
 									int existenciasActuales = recurso.getExistencias()-1;
-									usuario = prestar(recurso, usuario);
-									
+									recurso.setExistencias(existenciasActuales);
 									recursos.put(recurso.getId(), recurso);
-									recursos.get(converter).setExistencias(existenciasActuales);
+									usuario = prestar(recurso, usuario);
 									System.out.println("Usuario:PElicula:" + usuario.getListaAlquiler().get(converter).getTitulo() + "cantidad: " + usuario.getListaAlquiler().get(converter).getExistencias());
 									
 									System.out.println("Pelicula: " + recurso.getTitulo()  + " Cantidad: " + recurso.getExistencias());
