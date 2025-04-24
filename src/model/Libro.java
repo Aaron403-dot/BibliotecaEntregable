@@ -4,6 +4,12 @@ import java.time.LocalDate;
 
 import enums.GeneroLibro;
 
+/**
+ * <H1>Clase Hija de Recursos de Biblioteca (Libro)</H1>
+ * Es La clase de la cual hereda de la clase RecursosBiblioteca
+ * @author Aaron del Cristo Suárez Suárez
+ * */
+
 public class Libro extends RecursoBiblioteca{
 	
 	private String autor;

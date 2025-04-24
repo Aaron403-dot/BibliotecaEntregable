@@ -1,12 +1,14 @@
 package app;
 
-import java.awt.Menu;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import Excepciones.NoPlanRangeException;
 import enums.EstadosRecurso;
@@ -22,8 +24,8 @@ public class Main implements Prestamista {
 	//Plan de realizacion:
 	/*
 	 * el usuario puede tener Recursos guardados (V)
-	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (V ~)
-	 * si un producto esta sin existencias se puede reservar
+	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (V)
+	 * si un producto esta sin existencias se puede reservar (V)
 	 * si un usuario esta amonestado no puede alquilar un producto (V)
 	 * los datos del usuario se guardan en un documento externo
 	 * puede haber varias unidades de un mismo producto (V)
@@ -32,7 +34,7 @@ public class Main implements Prestamista {
 	 * 
 	 * TODO:
 	 * Generar los diagramas
-	 * Generar metodos necesarios para uso correcto (~)
+	 * Generar metodos necesarios para uso correcto (V)
 	 * 
 	 * 
 	 * */
@@ -56,13 +58,16 @@ public class Main implements Prestamista {
 	 * Este se ocupa de generar los usuarios de incio de prueba
 	 * @return HashMap<Long, Usuarios> la lista de los usuarios de esta hipotetica cuenta
 	 * */
+	
 	private Map<Long, Usuario> straterUsuarios() {
+		try {
 		long currentIdUsuario = 0l;
 		Map<Long, Usuario> usuarios = new HashMap<>();
 		Usuario usuario1 = new Usuario(currentIdUsuario, "Pablo", false);
 		currentIdUsuario++;
 		Usuario usuario2 = new Usuario(currentIdUsuario, "Marta", false);
 		usuario2.setAmonestado(true);
+		usuario2.setMultaAmonestacion(23);
 		currentIdUsuario++;
 		Usuario usuario3 = new Usuario(currentIdUsuario, "Juana", true);
 		usuario3.setPlan(PlanMiembro.GOLDEN);
@@ -70,7 +75,20 @@ public class Main implements Prestamista {
 		usuarios.put(usuario1.getId(), usuario1);
 		usuarios.put(usuario2.getId(), usuario2);
 		usuarios.put(usuario3.getId(), usuario3);
+		
+		for (Entry<Long, Usuario> usuario : usuarios.entrySet()) {
+			File file = new File(usuario.getValue().getNombre()+".txt");
+			FileWriter FW = new FileWriter(file);
+			FW.write(usuario.toString());
+			FW.close();
+		}
+		
+		
 		return usuarios;
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+			return null;
+		}
 	}
 
 	/***
@@ -108,7 +126,7 @@ public class Main implements Prestamista {
 	 * 
 	 * Este menu pregunta a que usuario se le va a entregar los productos, actualmente esta limitado a los 3 usuarios de base
 	 * @param Scanner: se ocupa de recibir los inputs
-	 * @param Hashmap<Long, Usuario>: recibe el map de usuarios de la cuenta
+	 * @param Hashmap '<'Long, Usuario'>' : recibe el map de usuarios de la cuenta
 	 * */
 	public Usuario menuAccesoUsuario(Scanner sc,Map<Long, Usuario> usuarios)
 	{
@@ -135,6 +153,15 @@ public class Main implements Prestamista {
 		}
 		
 	}
+	
+	/**
+	 * Clase del menu principal ocupada de la selecion de las funciones de la biblioteca
+	 * @param Scanner: se ocupa de recibir el input del usuario
+	 * @param Usuario: el usuario actualmente asignado
+	 * @param Map'<'Long,RecursoBiblioteca'>': el hashmap de recursos de la biblioteca
+	 * @retun Usuario: el usuario tras a ejecucion del programa
+	 * */
+	
 	
 	public Usuario menu(Scanner sc,Usuario usuario,Map<Long, RecursoBiblioteca> recursos){
 		try {
@@ -181,13 +208,11 @@ public class Main implements Prestamista {
 								if(recurso.getExistencias() > 0) {
 									
 									int existenciasActuales = recurso.getExistencias()-1;
+									RecursoBiblioteca prestamo = null;
+									prestamo = recurso.clone();
 									recurso.setExistencias(existenciasActuales);
 									recursos.put(recurso.getId(), recurso);
-									usuario = prestar(recurso, usuario);
-									System.out.println("Usuario:PElicula:" + usuario.getListaAlquiler().get(converter).getTitulo() + "cantidad: " + usuario.getListaAlquiler().get(converter).getExistencias());
-									
-									System.out.println("Pelicula: " + recurso.getTitulo()  + " Cantidad: " + recurso.getExistencias());
-									
+									usuario = prestar(prestamo, usuario);									
 									whileLoopState = false;
 									
 								}else{
@@ -195,11 +220,12 @@ public class Main implements Prestamista {
 									System.out.println("actualmente no nos quedan existencias quieres reservarlo");
 									System.out.println("[S]i ------------------------- [N]o");
 									boolean confirmStuck=true;
-									
+									RecursoBiblioteca prestamo = null;
+									prestamo = recurso.clone();
 									while(confirmStuck){
 										switch (sc.nextLine().toUpperCase()){
 											case "S":
-												usuario = prestar(recurso, usuario);
+												usuario = prestar(prestamo, usuario);
 												recursos.get(converter).setEstado(EstadosRecurso.PRESTADO);
 												confirmStuck=false;
 												whileLoopState = false;
@@ -226,12 +252,17 @@ public class Main implements Prestamista {
 					
 					break;
 				case "D":
+					
 					if(usuario.getListaAlquiler().size()==0){System.out.println("No tienes peliculas a devolver");
 						break;
 						}
+					
 					System.out.println("que deseas Devolver");
-					RecursoBiblioteca peliculaADevolver;
+					
+					RecursoBiblioteca peliculaADevolver = null;
+					
 					boolean whileLoopState2 = true;
+					
 					for (Map.Entry<Long, RecursoBiblioteca> listaDeCatalogo : usuario.getListaAlquiler().entrySet()) {
 						Long key = listaDeCatalogo.getKey();
 						RecursoBiblioteca val = listaDeCatalogo.getValue();
@@ -239,13 +270,29 @@ public class Main implements Prestamista {
 					}
 					while(whileLoopState2){
 						String confirmable = sc.nextLine();
+						
 						if(esNumero(confirmable)){
+							
 							if(usuario.getListaAlquiler().containsKey(Long.parseLong(confirmable))){
-								usuario = devolver(usuario.getListaAlquiler().get(Long.parseLong(confirmable)),usuario);
+								
+								peliculaADevolver = usuario.getListaAlquiler().get(Long.parseLong(confirmable)).clone();
+								if(usuario.getListaAlquiler().get(Long.parseLong(confirmable)).getEstado() == EstadosRecurso.RESERVADO && recursos.get(Long.parseLong(confirmable)).getExistencias() <= 0){
+									usuario = devolver(peliculaADevolver,usuario);
+									
+									recursos.get(Long.parseLong(confirmable)).setEstado(EstadosRecurso.SIN_EXISTENCIAS);
+									
+									whileLoopState2 = false;
+								}
+								usuario = devolver(peliculaADevolver,usuario);
+								
 								recursos.get(Long.parseLong(confirmable)).setExistencias(recursos.get(Long.parseLong(confirmable)).getExistencias()+1);
+								
 								whileLoopState2 = false;
+								
 							}else{
+								
 								System.out.println("El numero del producto no existe");
+							
 							}
 							
 						}
@@ -364,12 +411,20 @@ public class Main implements Prestamista {
 		Map<Long, RecursoBiblioteca> recursos = new HashMap<>();
 		recursos = usuario.getListaAlquiler();
 		LocalDate fechaDevolucion = LocalDate.now();
+		int existenciasRecursos = recurso.getExistencias();
 		if(recurso.getFechaDeDevolucion().isBefore(fechaDevolucion))
 		{
 			usuario.setAmonestado(true);
 		}
+		
 		recurso.setFechaDeDevolucion(fechaDevolucion);
-		recursos.remove(recurso.getId(),recurso);
+		if(existenciasRecursos <= 1){
+			recursos.remove(recurso.getId(),recurso);
+		}
+		else{
+			recurso.setExistencias(existenciasRecursos-1);
+			recursos.put(recurso.getId(), recurso);
+		}
 		usuario.setListaAlquiler(recursos);
 		return usuario;
 	}
@@ -484,7 +539,7 @@ public class Main implements Prestamista {
 	
 	@Override
 	public Usuario pagarAmonestacion(Usuario usuario) {
-		System.out.println("va a pagar la amonestacion de " + usuario.getMultaAmonestacion());
+		System.out.println("va a pagar la amonestacion de " + usuario.getMultaAmonestacion() + "Euros");
 		usuario.setMultaAmonestacion(0);
 		usuario.setAmonestado(false);
 		return usuario;

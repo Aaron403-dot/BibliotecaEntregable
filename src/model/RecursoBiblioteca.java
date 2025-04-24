@@ -11,7 +11,7 @@ import enums.EstadosRecurso;
  * @author Aaron del Cristo Suárez Suárez
  * */
 
-public abstract class RecursoBiblioteca {
+public abstract class RecursoBiblioteca implements Cloneable{
 	
 	long id;
 	String titulo;
@@ -103,7 +103,11 @@ public abstract class RecursoBiblioteca {
 	}
 	
 	
-
+	// Método para clonar el objeto
+    @Override
+	public RecursoBiblioteca clone() throws CloneNotSupportedException {
+        return (RecursoBiblioteca) super.clone();
+    }
 	
 
 }

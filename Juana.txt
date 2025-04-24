@@ -1,0 +1,1 @@
+2=Usuario [id=2, nombre=Juana, miembro=true, plan=GOLDEN]
