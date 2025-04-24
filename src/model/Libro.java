@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import enums.GeneroLibro;
 
-public class Libro extends RecursoBiblioteca {
+public class Libro extends RecursoBiblioteca{
 	
 	private String autor;
 	private LocalDate fechaDePublicacion;
@@ -58,5 +58,6 @@ public class Libro extends RecursoBiblioteca {
 	public void setGenero(GeneroLibro genero) {
 		this.genero = genero;
 	}
+	
 
 }

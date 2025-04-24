@@ -161,21 +161,20 @@ public class Main implements Prestamista {
 						if(esNumero(confirmable) && !confirmable.isBlank()){
 							
 							long converter =Long.parseLong(confirmable);
-							RecursoBiblioteca recurso;
-							String modelo = recursos.get(converter).getClass().toString();
-							switch (modelo){
+							RecursoBiblioteca recurso = null;
+							switch(recursos.get(converter).getClass().toString()){
 							case "class model.Libro":
 								recurso = new Libro((Libro) recursos.get(converter));
-								break;
-							case "class model.Revista":
-								recurso = new Revista((Revista) recursos.get(converter));
 								break;
 							case "class model.DVD":
 								recurso = new DVD((DVD) recursos.get(converter));
 								break;
+							case "class model.Revista":
+								recurso = new Revista((Revista) recursos.get(converter));
+								break;
 							default:
-								throw new Exception("COMO LO HAS HECHO");
 							}
+							
 							
 							if(recursos.containsKey(converter)){
 								
@@ -303,6 +302,7 @@ public class Main implements Prestamista {
 	public Usuario prestar(RecursoBiblioteca recurso, Usuario usuario) {
 		try {
 			
+			
 			if (recurso.getEstado() == EstadosRecurso.DESCATALOGADO && usuario.getPlan().compareTo(PlanMiembro.GOLDEN) < 0) {
 				throw new NoPlanRangeException(NoPlanRangeException(usuario));
 			}
@@ -343,8 +343,7 @@ public class Main implements Prestamista {
 			}
 			
 			recurso.setExistencias(1);
-			recursos.put(recurso.getId(),recurso);
-			usuario.setListaAlquiler(recursos);
+			usuario.getListaAlquiler().put(recurso.getId(), recurso);
 			return usuario;
 		} catch (NoPlanRangeException e) {
 			System.err.println(e.getMessage());

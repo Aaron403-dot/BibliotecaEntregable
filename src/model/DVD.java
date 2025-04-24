@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import enums.GeneroDePelicula;
 
-public class DVD extends RecursoBiblioteca {
+public class DVD extends RecursoBiblioteca{
 	
 	private String studio;
 	private String director;
@@ -102,5 +102,5 @@ public class DVD extends RecursoBiblioteca {
 		resumen = "Titulo: " + getTitulo() + "\n Dirigida por: " + getDirector() +  "\n del estudio: " + getStudio() + "\n fue lanzada el: " + getFechaDeSalida().toString() + "\n Dura: " + getDuracionMinutos() + "\n es del genero: " + getGenero().name();
 		return resumen;
 	}
-
+	
 }

@@ -2,7 +2,7 @@ package model;
 
 import enums.TipoRevista;
 
-public class Revista extends RecursoBiblioteca {
+public class Revista extends RecursoBiblioteca{
 	
 	private TipoRevista genero = TipoRevista.TECNOLOGIA;
 	private int numeroEdicion;
@@ -55,5 +55,4 @@ public class Revista extends RecursoBiblioteca {
 		resumen = "El titulo: " + getTitulo() + "\n del genero: " + getGenero().name() + "\n Numero de edicion: " + getNumeroEdicion();
 		return resumen;
 	}
-
 }
