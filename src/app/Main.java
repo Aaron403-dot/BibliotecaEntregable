@@ -144,23 +144,66 @@ public class Main implements Prestamista {
 				System.out.println("[A]lquilar, [D]evolver,[C]ambio,[B]aja,am[O]nestacion ,[S]alir");
 				switch (sc.nextLine().toUpperCase()) {
 				case "A":
+					
 					System.out.println("que deseas alquilar");
-					RecursoBiblioteca peliculaSeleccionada;
 					boolean whileLoopState = true;
+					
 					for (Map.Entry<Long, RecursoBiblioteca> listaDeCatalogo : recursos.entrySet()) {
 						Long key = listaDeCatalogo.getKey();
 						RecursoBiblioteca val = listaDeCatalogo.getValue();
 						System.out.println("["+key+"] "+ val.getTitulo() + " Existencias: " + val.getExistencias() + " tipo: " + val.getClass().getName());
 					}
+					
 					while(whileLoopState){
+						
 						String confirmable = sc.nextLine();
+						
 						if(esNumero(confirmable) && !confirmable.isBlank()){
+							
 							long converter =Long.parseLong(confirmable);
 							RecursoBiblioteca recurso = recursos.get(converter);
-							if(recursos.containsKey(converter) && recurso.getExistencias() > 0){
-								usuario = prestar(recurso, usuario);
-								recursos.get(converter).setExistencias(recursos.get(converter).getExistencias()-1);
-								whileLoopState = false;
+							
+							if(recursos.containsKey(converter)){
+								
+								if(recurso.getExistencias() > 0) {
+									
+									int existenciasActuales = recurso.getExistencias()-1;
+									usuario = prestar(recurso, usuario);
+									
+									recursos.put(recurso.getId(), recurso);
+									recursos.get(converter).setExistencias(existenciasActuales);
+									System.out.println("Usuario:PElicula:" + usuario.getListaAlquiler().get(converter).getTitulo() + "cantidad: " + usuario.getListaAlquiler().get(converter).getExistencias());
+									
+									System.out.println("Pelicula: " + recurso.getTitulo()  + " Cantidad: " + recurso.getExistencias());
+									
+									whileLoopState = false;
+									
+								}else{
+								
+									System.out.println("actualmente no nos quedan existencias quieres reservarlo");
+									System.out.println("[S]i ------------------------- [N]o");
+									boolean confirmStuck=true;
+									
+									while(confirmStuck){
+										switch (sc.nextLine().toUpperCase()){
+											case "S":
+												usuario = prestar(recurso, usuario);
+												recursos.get(converter).setEstado(EstadosRecurso.PRESTADO);
+												confirmStuck=false;
+												whileLoopState = false;
+												break;
+											case "N":
+												System.out.println("no se reservo el producto");
+												confirmStuck=false;
+												whileLoopState = false;
+												break;
+											default:
+												System.out.println("introduzca un valor valido");
+												break;
+										}
+									}	
+								}
+								
 							}else{
 								System.out.println("El numero del producto no existe");
 							}
@@ -253,18 +296,40 @@ public class Main implements Prestamista {
 			else{
 				System.out.println("recuerde que si es un usuario golden puede alquilar productos por un extra monetario");
 			}
-			
 			if(usuario.isAmonestado())
 			{
 				throw new NoPlanRangeException(NoPlanRangeException(usuario));
 			}
 			
+			int cantidadUsuario=0;
+			
+			if(usuario.getListaAlquiler().containsKey(recurso.getId())){
+				cantidadUsuario = usuario.getListaAlquiler().get(recurso.getId()).getExistencias();
+			}
+			
 			Map<Long, RecursoBiblioteca> recursos = new HashMap<>();
 			recursos = usuario.getListaAlquiler();
 			recurso.setFechaDeAlquiler(LocalDate.now());
+			
 			LocalDate fechaDevolucion = LocalDate.now();
 			fechaDevolucion.plusDays(15);
+			
 			recurso.setFechaDeDevolucion(fechaDevolucion);
+			
+			if(recurso.getExistencias() == 0)
+			{
+				recurso.setEstado(EstadosRecurso.RESERVADO);
+			}
+			
+			else if(recurso.getExistencias()>0 && usuario.getListaAlquiler().containsKey(recurso.getId())){
+				cantidadUsuario++;
+				recurso.setExistencias(cantidadUsuario);
+				recursos.put(recurso.getId(),recurso);
+				usuario.setListaAlquiler(recursos);
+				return usuario;
+			}
+			
+			recurso.setExistencias(1);
 			recursos.put(recurso.getId(),recurso);
 			usuario.setListaAlquiler(recursos);
 			return usuario;

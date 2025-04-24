@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import enums.EstadosRecurso;
 
@@ -69,6 +70,27 @@ public abstract class RecursoBiblioteca {
 	}
 
 	public abstract String descripcion();
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(estado, existencias, fechaDeAlquiler, fechaDeDevolucion, id, titulo);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RecursoBiblioteca other = (RecursoBiblioteca) obj;
+		return estado == other.estado && existencias == other.existencias
+				&& Objects.equals(fechaDeAlquiler, other.fechaDeAlquiler)
+				&& Objects.equals(fechaDeDevolucion, other.fechaDeDevolucion) && id == other.id
+				&& Objects.equals(titulo, other.titulo);
+	}
+	
 	
 
 }
