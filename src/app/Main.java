@@ -22,22 +22,19 @@ public class Main implements Prestamista {
 	//Plan de realizacion:
 	/*
 	 * el usuario puede tener Recursos guardados (V)
-	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (~)
+	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (V ~)
 	 * si un producto esta sin existencias se puede reservar
-	 * si un usuario esta amonestado no puede alquilar un producto
+	 * si un usuario esta amonestado no puede alquilar un producto (V)
 	 * los datos del usuario se guardan en un documento externo
-	 * los productos estan divididos en secciones segun el producto
-	 * estos tambien pueden dividirse en subcategorias segun el genero
-	 * puede haber varias unidades de un mismo producto
-	 * los planes de usuario o el añadir o quitar de la lista de un usuario un producto
+	 * puede haber varias unidades de un mismo producto (V)
+	 * los planes de usuario o el añadir o quitar de la lista de un usuario un producto (V)
 	 * 
 	 * 
 	 * TODO:
 	 * Generar los diagramas
-	 * Generar metodos necesarios para uso correcto
+	 * Generar metodos necesarios para uso correcto (~)
 	 * 
 	 * 
-	 * {ANTE LA DUDA MIRAR EL DOC DEL ENUNCIADO DEL EJERCICIO Y DEJAR QUE LA INSPIRACION TOME EL VOLANTE}
 	 * */
 	
 	public static void main(String[] args) {
@@ -173,7 +170,8 @@ public class Main implements Prestamista {
 					
 					
 					break;
-				case "D":if(usuario.getListaAlquiler().size()==0){System.out.println("No tienes peliculas a devolver");
+				case "D":
+					if(usuario.getListaAlquiler().size()==0){System.out.println("No tienes peliculas a devolver");
 						break;
 						}
 					System.out.println("que deseas Devolver");
@@ -182,7 +180,7 @@ public class Main implements Prestamista {
 					for (Map.Entry<Long, RecursoBiblioteca> listaDeCatalogo : usuario.getListaAlquiler().entrySet()) {
 						Long key = listaDeCatalogo.getKey();
 						RecursoBiblioteca val = listaDeCatalogo.getValue();
-						System.out.println("["+key+"] "+ val.getTitulo() + " Existencias: " + val.getExistencias() + " tipo: " + val.getClass().getName());
+						System.out.println("["+key+"] "+ val.getTitulo() + " tipo: " + val.getClass().getName());
 					}
 					while(whileLoopState2){
 						String confirmable = sc.nextLine();
@@ -256,6 +254,11 @@ public class Main implements Prestamista {
 				System.out.println("recuerde que si es un usuario golden puede alquilar productos por un extra monetario");
 			}
 			
+			if(usuario.isAmonestado())
+			{
+				throw new NoPlanRangeException(NoPlanRangeException(usuario));
+			}
+			
 			Map<Long, RecursoBiblioteca> recursos = new HashMap<>();
 			recursos = usuario.getListaAlquiler();
 			recurso.setFechaDeAlquiler(LocalDate.now());
@@ -271,7 +274,14 @@ public class Main implements Prestamista {
 		}
 		
 	}
-
+	
+	/**
+	 * Es el metodo principal para la devolucion de medios
+	 * @param RecursoBiblioteca: usando la clase padre puede recibir cualquiera de las clases hijos
+	 * @param Usuario: el usuario que va a devolver el producto
+	 * @return Usuario: devuelve el quitado al map del usuario de productos rentados
+	 * */
+	
 	@Override
 	public Usuario devolver(RecursoBiblioteca recurso, Usuario usuario) {
 		Map<Long, RecursoBiblioteca> recursos = new HashMap<>();
@@ -346,6 +356,13 @@ public class Main implements Prestamista {
 		
 	}
 	
+	/**
+	 * Metodo simple que da de baja al usuario
+	 * @param Usuario: el usuario el cual desea darse de baja
+	 * @param Scanner: para el input de confirmacion
+	 * @return Usuario: actualizacion del objeto usuario
+	 * */
+	
 	@Override
 	public Usuario darseDeBaja(Usuario usuario,Scanner sc) {
 		System.out.println("Esta apunto de darse de baja de nuestros planes para miembros desea continuar?");
@@ -382,7 +399,12 @@ public class Main implements Prestamista {
 		return usuario;
 	}
 
-
+	/**
+	 * Metodo simple que declara la multa de la amonestacion
+	 * @param Usuario: el usuario amonestado al que se le va a quitar la amonestacion
+	 * @return Usuario: actualizacion del objeto usuario sin la amonestacion
+	 * */
+	
 	@Override
 	public Usuario pagarAmonestacion(Usuario usuario) {
 		System.out.println("va a pagar la amonestacion de " + usuario.getMultaAmonestacion());
@@ -391,14 +413,26 @@ public class Main implements Prestamista {
 		return usuario;
 	}
 	
-	
+	/**
+	 * Metodo que retorna los mensajes de excepcion del programa
+	 * @param Usuario: el usuario para detectar la causa de la excepcion
+	 * @return String: el mensaje de error
+	 * */
 	private String NoPlanRangeException(Usuario usuario){
 		try {
+			
             if (usuario==null) {
-                return "Por Algun Motivo el Usuario NO existe";}
+                return "Por Algun Motivo el Usuario NO existe";
+            }
+            
+            if (usuario.isAmonestado()){
+            	return "Actualmente No tiene permitido el alquiler de productos, Page la amonestacion y se le permitira el aquiler de nuevo";
+            }
+            
             if (usuario.getPlan() != PlanMiembro.GOLDEN) {
                 return "Actualmente el libro esta descatalogado";
             }
+            
             return "";
         } catch (NullPointerException e) {
             return e.getMessage();
@@ -407,7 +441,9 @@ public class Main implements Prestamista {
 	
 	
 	/**
-	 * La vieja confiable
+	 * metodo interno para la deteccion de un String para saber si este es un Integer
+	 * @param String: el valor <b>Supuestamente</b> numerico
+	 * @return boolean: Si es un Numero <b>TRUE</b> si no es un numero <b>FALSE</b>
 	 * */
 	private static boolean esNumero(String NumOLet)
     {

@@ -5,6 +5,11 @@ import java.util.Scanner;
 import enums.PlanMiembro;
 import model.*;
 
+/**
+ * <H1>Interfaz Prestamista</H1>
+ * Es La interfaz de la cual se heredaran los metodos de acciones de la APP
+ * @author Aaron del Cristo Suárez Suárez
+ * */
 
 public interface Prestamista {
 	/**

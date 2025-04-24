@@ -7,7 +7,7 @@ import enums.PlanMiembro;
 
 /**
  * <H1>Clase usuario</H1>
- * 
+ * Es La clase Para los Objetos usuarios
  * @author Aaron del Cristo Suárez Suárez
  * */
 

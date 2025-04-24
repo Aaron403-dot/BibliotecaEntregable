@@ -4,6 +4,12 @@ import java.time.LocalDate;
 
 import enums.EstadosRecurso;
 
+/**
+ * <H1>Clase abstrcta de Recursos de Biblioteca</H1>
+ * Es La clase de la cual heredaran las otras subclasse para genera la base de los objetos
+ * @author Aaron del Cristo Suárez Suárez
+ * */
+
 public abstract class RecursoBiblioteca {
 	
 	long id;

@@ -15,12 +15,10 @@ public class Libro extends RecursoBiblioteca {
 		this.autor = autor;
 		this.fechaDePublicacion = fechaDePublicacion;
 		this.genero = genero;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String descripcion() {
-		// TODO Auto-generated method stub
 		String resumen;
 		resumen = "El libro se llama: " + getTitulo() + "\n fue escrito por: " + getAutor() + "\n es del Genero: " + getGenero().name() + "\n fue escrito el: " + getFechaDePublicacion().toString();
 		return resumen;
