@@ -1,1 +1,0 @@
-1=Usuario [id=1, nombre=Marta, miembro=false, plan=BASICO]
