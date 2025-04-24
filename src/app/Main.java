@@ -27,12 +27,12 @@ public class Main implements Prestamista {
 	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (V)
 	 * si un producto esta sin existencias se puede reservar (V)
 	 * si un usuario esta amonestado no puede alquilar un producto (V)
-	 * los datos del usuario se guardan en un documento externo
+	 * los datos del usuario se guardan en un documento externo (V)
 	 * puede haber varias unidades de un mismo producto (V)
 	 * los planes de usuario o el añadir o quitar de la lista de un usuario un producto (V)
 	 * 
 	 * 
-	 * TODO:
+	 * 
 	 * Generar los diagramas
 	 * Generar metodos necesarios para uso correcto (V)
 	 * 
