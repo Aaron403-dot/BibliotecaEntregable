@@ -1,0 +1,5 @@
+package enums;
+
+public enum GeneroLibro {
+TERROR,ROMANCE,COMEDIA,THRILLER,NOVELA_VISUAL,EDUCATIVO
+}
