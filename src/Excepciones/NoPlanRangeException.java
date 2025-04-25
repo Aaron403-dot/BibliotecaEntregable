@@ -1,8 +1,8 @@
 package Excepciones;
 
 /**
- * <H1>Clase NoPlanRangeException</H1>
- * @category Excepcion
+ * Clase NoPlanRangeException
+ * clase de Excepcion
  * Es La clase Para la excepcio en caso de que no se cumplan las condiciones para el alquiler
  * @author Aaron del Cristo Suárez Suárez
  * */

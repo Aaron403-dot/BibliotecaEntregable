@@ -6,7 +6,7 @@ import java.util.Objects;
 import enums.EstadosRecurso;
 
 /**
- * <H1>Clase abstrcta de Recursos de Biblioteca</H1>
+ * Clase abstrcta de Recursos de Biblioteca
  * Es La clase de la cual heredaran las otras subclasse para genera la base de los objetos
  * @author Aaron del Cristo Suárez Suárez
  * */

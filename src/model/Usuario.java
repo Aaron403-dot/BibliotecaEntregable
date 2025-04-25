@@ -6,7 +6,7 @@ import java.util.HashMap;
 import enums.PlanMiembro;
 
 /**
- * <H1>Clase usuario</H1>
+ * Clase usuario
  * Es La clase Para los Objetos usuarios
  * @author Aaron del Cristo Suárez Suárez
  * */

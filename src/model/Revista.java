@@ -3,7 +3,7 @@ package model;
 import enums.TipoRevista;
 
 /**
- * <H1>Clase Hija de Recursos de Biblioteca (Revista)</H1>
+ * Clase Hija de Recursos de Biblioteca (Revista)
  * Es La clase de la cual hereda de la clase RecursosBiblioteca
  * @author Aaron del Cristo Suárez Suárez
  * */

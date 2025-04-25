@@ -19,25 +19,17 @@ import enums.TipoRevista;
 import interfaces.Prestamista;
 import model.*;
 
+/**
+ * clase main principal la cual tiene toda la logica de la app
+ * @author Aarón del Cristo Suárez Suárez
+ * */
+
 public class Main implements Prestamista {
-	
-	//Plan de realizacion:
-	/*
-	 * el usuario puede tener Recursos guardados (V)
-	 * el usuario puede reservar por un precio extra (excluido el dinero) productos descatalogados si es GOLDEN (V)
-	 * si un producto esta sin existencias se puede reservar (V)
-	 * si un usuario esta amonestado no puede alquilar un producto (V)
-	 * los datos del usuario se guardan en un documento externo (V)
-	 * puede haber varias unidades de un mismo producto (V)
-	 * los planes de usuario o el añadir o quitar de la lista de un usuario un producto (V)
-	 * 
-	 * 
-	 * 
-	 * Generar los diagramas
-	 * Generar metodos necesarios para uso correcto (V)
-	 * 
-	 * 
+	/**
+	 * metodo main que se ocupa de ejecutar la logica del programa
+	 * @param args
 	 * */
+	
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -56,7 +48,7 @@ public class Main implements Prestamista {
 	
 	/***
 	 * Este se ocupa de generar los usuarios de incio de prueba
-	 * @return HashMap<Long, Usuarios> la lista de los usuarios de esta hipotetica cuenta
+	 * @return usuarios: la lista de los usuarios de esta hipotetica cuenta
 	 * */
 	
 	private Map<Long, Usuario> straterUsuarios() {
@@ -93,7 +85,7 @@ public class Main implements Prestamista {
 
 	/***
 	 * Este se ocupa de generar los Recursos de incio de prueba
-	 * @param LocalDate: se ocupa de ser el dato de la fecha inicial
+	 * @param fechaIntroductor: se ocupa de ser el dato de la fecha inicial
 	 * */
 	
 	private Map<Long, RecursoBiblioteca> starterRecursos(LocalDate fechaIntroductor) {
@@ -125,8 +117,9 @@ public class Main implements Prestamista {
 	/**
 	 * 
 	 * Este menu pregunta a que usuario se le va a entregar los productos, actualmente esta limitado a los 3 usuarios de base
-	 * @param Scanner: se ocupa de recibir los inputs
-	 * @param Hashmap '<'Long, Usuario'>' : recibe el map de usuarios de la cuenta
+	 * @param sc: se ocupa de recibir los inputs
+	 * @param usuarios: recibe el map de usuarios de la cuenta
+	 * @return usuario: el usuario seleccionado
 	 * */
 	public Usuario menuAccesoUsuario(Scanner sc,Map<Long, Usuario> usuarios)
 	{
@@ -156,10 +149,10 @@ public class Main implements Prestamista {
 	
 	/**
 	 * Clase del menu principal ocupada de la selecion de las funciones de la biblioteca
-	 * @param Scanner: se ocupa de recibir el input del usuario
-	 * @param Usuario: el usuario actualmente asignado
-	 * @param Map'<'Long,RecursoBiblioteca'>': el hashmap de recursos de la biblioteca
-	 * @retun Usuario: el usuario tras a ejecucion del programa
+	 * @param sc: se ocupa de recibir el input del usuario
+	 * @param usuario: el usuario actualmente asignado
+	 * @param recursos: el hashmap de recursos de la biblioteca
+	 * @return usuario: el usuario tras a ejecucion del programa
 	 * */
 	
 	
@@ -340,9 +333,9 @@ public class Main implements Prestamista {
 	
 	/**
 	 * Es el metodo principal del prestamo de medios
-	 * @param RecursoBiblioteca: usando la clase padre puede recibir cualquiera de las clases hijos
-	 * @param Usuario: el usuario que va a recibir el libro
-	 * @return Usuario: devuelve el añadido al map del usuario de libros rentados
+	 * @param recurso: usando la clase padre puede recibir cualquiera de las clases hijos
+	 * @param usuario: el usuario que va a recibir el libro
+	 * @return usuario: devuelve el añadido al map del usuario de libros rentados
 	 * */
 	
 	@Override
@@ -401,9 +394,9 @@ public class Main implements Prestamista {
 	
 	/**
 	 * Es el metodo principal para la devolucion de medios
-	 * @param RecursoBiblioteca: usando la clase padre puede recibir cualquiera de las clases hijos
-	 * @param Usuario: el usuario que va a devolver el producto
-	 * @return Usuario: devuelve el quitado al map del usuario de productos rentados
+	 * @param recurso: usando la clase padre puede recibir cualquiera de las clases hijos
+	 * @param usuario: el usuario que va a devolver el producto
+	 * @return usuario: devuelve el quitado al map del usuario de productos rentados
 	 * */
 	
 	@Override
@@ -432,9 +425,9 @@ public class Main implements Prestamista {
 	
 	/**
 	 * Este es el metodo que se ocupa del cambio de planes sea a uno de mayor clase a uno de menor clase
-	 * @param Usuario: el usuario que recibe el cambio de plan
-	 * @param Scanner: el input necesario para saber el plan buscado
-	 * @return Usuario: el resultado el cambio se establece
+	 * @param usuario: el usuario que recibe el cambio de plan
+	 * @param sc: el input necesario para saber el plan buscado
+	 * @return usuario: el resultado el cambio se establece
 	 * */
 	
 	@Override
@@ -490,9 +483,9 @@ public class Main implements Prestamista {
 	
 	/**
 	 * Metodo simple que da de baja al usuario
-	 * @param Usuario: el usuario el cual desea darse de baja
-	 * @param Scanner: para el input de confirmacion
-	 * @return Usuario: actualizacion del objeto usuario
+	 * @param usuario: el usuario el cual desea darse de baja
+	 * @param sc: para el input de confirmacion
+	 * @return usuario: actualizacion del objeto usuario
 	 * */
 	
 	@Override
@@ -533,8 +526,8 @@ public class Main implements Prestamista {
 
 	/**
 	 * Metodo simple que declara la multa de la amonestacion
-	 * @param Usuario: el usuario amonestado al que se le va a quitar la amonestacion
-	 * @return Usuario: actualizacion del objeto usuario sin la amonestacion
+	 * @param usuario: el usuario amonestado al que se le va a quitar la amonestacion
+	 * @return usuario: actualizacion del objeto usuario sin la amonestacion
 	 * */
 	
 	@Override
