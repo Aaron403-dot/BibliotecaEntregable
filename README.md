@@ -1,5 +1,5 @@
 # BibliotecaEntregable
-<img src="https://png.pngtree.com/png-clipart/20201208/original/pngtree-cartoon-library-hand-drawn-clipart-png-image_5583242.jpg" alt="Logo" style="width:30%; padding-left:35%;">
+<img src="https://png.pngtree.com/png-clipart/20201208/original/pngtree-cartoon-library-hand-drawn-clipart-png-image_5583242.jpg" alt="Logo" style="width:30%; padding-left:35%;mix-blend-mode:multiply;">
 
 ## Introducción
 
